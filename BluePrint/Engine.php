@@ -5,7 +5,7 @@ use BluePrint\core\Dispatcher;
 
 class Engine {
 	protected $vars;
-    protected $loader;
+    public $loader;
     protected $dispatcher;
 
     public function __construct() {
@@ -13,6 +13,11 @@ class Engine {
         $this->loader = new Loader();
         $this->dispatcher = new Dispatcher();
         $this->init();
+    }
+
+    public function __get($name){
+    	var_dump($this->loader);    
+    	return true;
     }
 
     public function __call($name, $params) {
@@ -35,7 +40,7 @@ class Engine {
 
         // Register framework methods
         $methods = array(//Standard Methods
-            'start'
+            'start', 'loadPlugin'
         );
         foreach ($methods as $name) {
             $this->dispatcher->set($name, array($this, '_'.$name));
@@ -128,6 +133,10 @@ class Engine {
         ob_start();
         // Enable error handling
         $this->handleErrors($this->get('BluePrint.Config.handle_errors'));
+    }
+
+    public function _loadPlugin($name, $class, array $params = array(), $callback = null){
+    	$this->loader->loadPlugin($name, $class, $params = array(), $callback = null);
     }
 }
 ?>

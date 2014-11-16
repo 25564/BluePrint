@@ -88,40 +88,50 @@ class Dispatcher {
     public static function invokeMethod($func, array &$params = array()) {
         list($class, $method) = $func;
 		$instance = is_object($class);//Is Static
-		if (!empty(self::$filters[$method]['before'])) {
-            self::filter(self::$filters[$method]['before'], $params, $output);
+
+		if (isset(self::$filters[get_class($class) . "\\" . $method]['before'])) {
+            self::filter(self::$filters[get_class($class) . "\\" . $method]['before'], $params, $output);
         }
+        $return;
         switch (count($params)) {
             case 0:
-                return ($instance) ?
+                $return = ($instance) ?
                     $class->$method() :
                     $class::$method();
+                break;
             case 1:
-                return ($instance) ?
+                $return = ($instance) ?
                     $class->$method($params[0]) :
                     $class::$method($params[0]);
+                break;
             case 2:
-                return ($instance) ?
+                $return = ($instance) ?
                     $class->$method($params[0], $params[1]) :
                     $class::$method($params[0], $params[1]);
+                break;
             case 3:
-                return ($instance) ?
+                $return = ($instance) ?
                     $class->$method($params[0], $params[1], $params[2]) :
                     $class::$method($params[0], $params[1], $params[2]);
+                break;
             case 4:
-                return ($instance) ?
+                $return = ($instance) ?
                     $class->$method($params[0], $params[1], $params[2], $params[3]) :
                     $class::$method($params[0], $params[1], $params[2], $params[3]);
+                break;
             case 5:
-                return ($instance) ?
+                $return = ($instance) ?
                     $class->$method($params[0], $params[1], $params[2], $params[3], $params[4]) :
                     $class::$method($params[0], $params[1], $params[2], $params[3], $params[4]);
+                break;
             default:
-                return call_user_func_array($func, $params);
+                $return = call_user_func_array($func, $params);
+            break;
         }
-        if (!empty(self::$filters[$method]['after'])) {
-            $this->filter(self::$filters[$method]['after'], $params, $output);
+        if (isset(self::$filters[get_class($class) . "\\" . $method]['after'])) {
+            self::filter(self::$filters[get_class($class) . "\\" . $method]['after'], $params, $output);
         }
+        return $return;
     }
 
 	public function reset() {

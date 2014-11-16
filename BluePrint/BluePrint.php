@@ -17,8 +17,14 @@ class BluePrint {
         return \BluePrint\core\Dispatcher::invokeMethod(array(self::$engine, $name), $params);
     }
 
+    public static function Plugin($name){
+    	return self::$engine->loader->plugins[$name];
+    }
+
     public static function app() {
         return self::$engine;
     }
+
+
 }
 ?>

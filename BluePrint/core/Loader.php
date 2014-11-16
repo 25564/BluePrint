@@ -6,6 +6,7 @@ class Loader {
 	protected $classes = array();
     protected $instances = array();
     protected static $dirs = array();
+    public $plugins = array();
 
     public function register($name, $class, array $params = array(), $callback = null) {
         unset($this->instances[$name]);
@@ -46,22 +47,24 @@ class Loader {
     }
 
     public function newInstance($class, array $params = array()) {
+    	$this->loadClass($class);
+    	$className = str_replace(array('/', '_'), '\\', $class);
         if (is_callable($class)) {
             return call_user_func_array($class, $params);
         }
         switch (count($params)) {
             case 0:
-                return new $class();
+                return new $className();
             case 1:
-                return new $class($params[0]);
+                return new $className($params[0]);
             case 2:
-                return new $class($params[0], $params[1]);
+                return new $className($params[0], $params[1]);
             case 3:
-                return new $class($params[0], $params[1], $params[2]);
+                return new $className($params[0], $params[1], $params[2]);
             case 4:
-                return new $class($params[0], $params[1], $params[2], $params[3]);
+                return new $className($params[0], $params[1], $params[2], $params[3]);
             case 5:
-                return new $class($params[0], $params[1], $params[2], $params[3], $params[4]);
+                return new $className($params[0], $params[1], $params[2], $params[3], $params[4]);
             default:
                 $refClass = new \ReflectionClass($class);
                 return $refClass->newInstanceArgs($params);
@@ -93,6 +96,14 @@ class Loader {
                 require $file;
                 return;
             }
+        }
+    }
+
+    public function loadPlugin($name, $class, array $params = array(), $callback = null){
+    	$this->plugins[$name] = $this->newInstance("/BluePrint/plugins/" . $class, $params);
+    	if ($callback) {
+            $ref = array(&$this->plugins[$name]);
+            call_user_func_array($callback, $ref);//Run the Callback
         }
     }
 
