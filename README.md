@@ -3,9 +3,13 @@ BluePrint
 BluePrint is a simple, extensible framework for PHP
 
 ###Components
-Components are key aspects of the framework, however they are not required by the core Framework. Some examples of components would be a templating class, which is needed on almost every page.
+Components are key aspects of the framework, however they are not required by the core Framework. Some examples of components would be a templating class, which is needed on almost every page. Components can be accessesd by the following:
+```php
+var ValidName = BluePrint::DB()->table("user")->exists("Username", "25564"));//The component DB is used here
+```
 
 Current there are no components. **Components should be essential and because of this they are required on every page**
+
 
 ###Plugins
 Plugins are classes which hold functionality which is not as essential as components. A few examples of classes are Encryption, Validation and Blog; while these classes are useful they are not required on every page and can be loaded when needed. A plugin can be loaded and ran by:
