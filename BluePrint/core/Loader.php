@@ -17,10 +17,13 @@ class Loader {
         unset($this->classes[$name]);
     }
 
-    public function load($name, $shared = true){//Load a registered class
+    public function load($name, $shared = true, $NewParams = array()){//Load a registered class
     	$obj = null;
         if (isset($this->classes[$name])) {//Check Registered
             list($class, $params, $callback) = $this->classes[$name];
+            if(!empty($NewParams)){
+                $params = $NewParams;
+            }
             $exists = isset($this->instances[$name]);
             if ($shared) {
                 $obj = ($exists) ?

@@ -26,17 +26,20 @@ class Engine {
             return $this->dispatcher->run($name, $params);
         }
         $shared = (!empty($params)) ? (bool)$params[0] : true;
-        return $this->loader->load($name, $shared);
+        return $this->loader->load($name, $shared, $params);
     }
 
 	public function init() {
         static $initialized = false;
         $self = $this;
+
         if ($initialized) {
             $this->vars = array();
             $this->loader->reset();
             $this->dispatcher->reset();
         }
+        //Components
+        $this->loader->register('DB', '\BluePrint\components\DB');
 
         // Register framework methods
         $methods = array(//Standard Methods
@@ -47,7 +50,11 @@ class Engine {
         }
         // Default configuration settings
         $this->set("BluePrint.Config.handle_errors", true);
-    	
+    	$this->set("PDO.host", "localhost");
+        $this->set("PDO.username", "root");
+        $this->set("PDO.password", "");
+        $this->set("PDO.db", "framework");
+
         $initialized = true;
     }
 
