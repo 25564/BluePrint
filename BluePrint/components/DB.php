@@ -75,11 +75,11 @@ class DB implements \Countable {
 		return $this->query("INSERT INTO " . $this->_table . " (" . implode(",", $data["columns"]) . ") VALUES " . implode(",", $data["values"]), "insert");
 	}
 
-	public function update($key = false, $operator = false, $value = false){
+	public function update(array $updateData){
 		$this->WhereParams($key, $operator, $value);
 		if($this->hasQuery){
 			$update = array();
-			foreach($data as $column => $value){
+			foreach($updateData as $column => $value){
 				$update[] = $column."='".$value."'";
 			}
 			return $this->query("UPDATE ".$this->_table." SET ".implode(",", $update)." ".$this->_query, "update");
