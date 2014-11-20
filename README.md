@@ -99,7 +99,7 @@ returns true if at least one row meets the query requirements
 
 
 
-######where($key, $operator, $value)
+#####where($key, $operator, $value)
 if no operator is supplied it is assumed to be "="
 ```php
 DB()->where("username","25564")//Is just as valid as
