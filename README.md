@@ -49,19 +49,22 @@ Currently there is a simple database component as standard and it is capable of 
 ```php
 $Table = BluePrint::DB("users");
 ```
-#####__construct(String : TableName, Optional Boolean : CustomDB)
+######__construct(String : TableName, Optional Boolean : CustomDB)
 CustomDB defaults to false but if it is true it will ignore the DB outlined in the config and will instead require a DB is established via ConnectDB()
 
 
-#####ConnectDB(Host, DB Name, Username, Password)
+
+######ConnectDB(Host, DB Name, Username, Password)
 Creates a new DB connection
 
 
-#####query(SQL , Optional String : Action Type  , Optional Array : Parameters)
+
+######query(SQL , Optional String : Action Type  , Optional Array : Parameters)
 Parameters are values that will replace placholder "?"'s in the SQL query before being run
 
 
-#####insert(Array : InsertData)
+
+######insert(Array : InsertData)
 The array must be set out like the following:
 Array(
   "username"=>"25564",
@@ -70,27 +73,33 @@ Array(
 This will insert a row with username equal to 25564 and group_id equal to 3
 
 
-#####update(Array : updateData)
+
+######update(Array : updateData)
 Set out in the same format as insert
 
 
-####delete(Optional Where parameters)
+
+######delete(Optional Where parameters)
 Can have same parameters as Where and yield same result
 
 
-####get(Optional Where Parameters, Int : Amount)
+
+######get(Optional Where Parameters, Int : Amount)
 Amount limits the amount returned so lets say Amount was equal to three then it would only return three rows
 
 
-####count(Optional Where Parameters)
+
+######count(Optional Where Parameters)
 returns the amount of rows that meet the query
 
 
-####exists(Optional Where Parameters)
+
+######exists(Optional Where Parameters)
 returns true if at least one row meets the query requirements
 
 
-####where($key, $operator, $value)
+
+######where($key, $operator, $value)
 if no operator is supplied it is assumed to be "="
 ```php
 DB()->where("username","25564")//Is just as valid as
@@ -98,7 +107,9 @@ DB()->where("username", "=","25564")
 ```
 This same function is embedded within other functions such as exist, count and delete
 
-####skip(Int)
+
+
+######skip(Int)
 Will disregard the first INT amount of rows
 
 
