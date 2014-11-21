@@ -43,7 +43,7 @@ class Engine {
 
         // Register framework methods
         $methods = array(//Standard Methods
-            'start', 'loadPlugin'
+            'start', 'loadPlugin', 'escape'
         );
         foreach ($methods as $name) {
             $this->dispatcher->set($name, array($this, '_'.$name));
@@ -144,6 +144,10 @@ class Engine {
 
     public function _loadPlugin($name, $class, array $params = array(), $callback = null){
     	$this->loader->loadPlugin($name, $class, $params = array(), $callback = null);
+    }
+
+    public function _escape($string){
+        return htmlentities($string, ENT_QUOTES, 'UTF-8');
     }
 }
 ?>
