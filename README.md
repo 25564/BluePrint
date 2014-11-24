@@ -14,7 +14,7 @@ The above code will return true or false depending on if their is a row in the t
 ###Plugins
 Plugins are classes which hold functionality which is not as essential as components. A few examples of classes are Encryption, Validation and Blog; while these classes are useful they are not required on every page and can be loaded when needed. A plugin can be loaded and ran by:
 ```php
-BluePrint::loadPlugin("Cookie", "Cookie");
+BluePrint::loadPlugin("Cookie", "Cookie"); //Essentially Requires the Plugin
 BluePrint::Plugin("Cookie")->exists("Username"));
 ```
 
