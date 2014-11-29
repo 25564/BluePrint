@@ -14,7 +14,7 @@ The above code will return true or false depending on if their is a row in the t
 ###Plugins
 Plugins are classes which hold functionality which is not as essential as components. A few examples of classes are Encryption, Validation and Blog; while these classes are useful they are not required on every page and can be loaded when needed. A plugin can be loaded and ran by:
 ```php
-BluePrint::loadPlugin("Cookie", "Cookie");
+BluePrint::loadPlugin("Cookie", "Cookie"); //Essentially Requires the Plugin
 BluePrint::Plugin("Cookie")->exists("Username"));
 ```
 
@@ -113,3 +113,30 @@ This same function is embedded within other functions such as exist, count and d
 Will disregard the first INT amount of rows
 
 
+
+###Validation
+This validation plugin has two params, the first being an array of data and the second being a set of rules that the Data must meet. This Validation class can be used like this
+```php
+BluePrint::loadPlugin("Validate", "Validate\Validation");//Load Plugin
+$Checked = BluePrint::Plugin("Validate")->Validate(//Will return bool whether or not all rules are met
+		array(
+			"Username"=>"cool371132"//Data being Checked
+		),
+		array(
+			"Username" => array(//The key in the data these rules apply to
+				"required" => true,//Must be set
+				"min" => array( 
+          //If a custom error message is wanted you can set the rule value to an array with two keys (Value being the actual rule value and CustomError being the custom error)
+					"Value" => 7,
+					"CustomError" => "Username is not long enough"
+				),
+				"max" => 20,//If no error message is needed then just pass the value not in array format
+				"unique" => array( //Some rules do require an array input
+					"Table" => "user",
+					"Column"=> "username",
+					"CustomError" => "{Value} is already taken"//{$Value} being replaced by the Data value (in this case "cool37132")
+				),
+			)
+		)
+	);
+```
