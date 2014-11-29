@@ -140,3 +140,28 @@ $Checked = BluePrint::Plugin("Validate")->Validate(//Will return bool whether or
 		)
 	);
 ```
+
+###Collections
+A collection is a set of Data that can be accessed by both Array and Object Notation. Almost anything you can do to an array you can do to a collection
+```php
+use BluePrint\util\Collection;
+$Collection = new Collection(array(
+	"User" => array(
+		"Name"=>"25564",
+		"GroupID"=>2
+	)
+));
+
+//We can access that User data in two ways either:
+$Collection["User"];
+//or we can use:
+$Collection->User;
+//Both are valid.
+
+$Collection->set(array("Hiya", " this ", "is ", "a ", " test")); //Override all existing Data
+foreach($Collection as $Entry){
+	echo $Entry;
+}//Outputs as expected
+
+var_dump($Collection->get());//Returns Collection as an array
+```

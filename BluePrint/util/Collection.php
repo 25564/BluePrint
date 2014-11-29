@@ -12,7 +12,7 @@ class Collection implements \ArrayAccess, \Iterator, \Countable {
 	}
 
 	public function __get($key){
-		if(isset($this->_data[$key]){
+		if(isset($this->_data[$key])){
 			return $this->_data[$key];
 		} else {
 			return ($this->_default != "") ? $this->_default : null;
@@ -31,7 +31,7 @@ class Collection implements \ArrayAccess, \Iterator, \Countable {
         unset($this->_data[$key]);
     }
 
-    public function count($key) {
+    public function count() {
         count($this->_data);
     }
 
