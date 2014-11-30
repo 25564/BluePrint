@@ -6,13 +6,19 @@ class DB implements \Countable {
 			$_PDO = false,
 			$_query = "",
 			$_results,
-			$_skipAmount = 0;
+			$_skipAmount = 0,
+			$_returnArray = false;
 
 	public function __construct($TableName, $CustomDB = false){
 		$this->_table = $TableName;
 		if($CustomDB == false){
 			$this->ConnectDB(\BluePrint::get('PDO.host'), \BluePrint::get('PDO.db'), \BluePrint::get('PDO.username'), \BluePrint::get('PDO.password'));
 		}
+		return $this;
+	}
+
+	public function returnArray(){
+		$this->_returnArray = true;
 		return $this;
 	}
 
@@ -36,7 +42,11 @@ class DB implements \Countable {
 			if($this->_query->execute()){
 				switch($type){
 					case "get":
-						$this->_results = $this->_query->fetchAll(\PDO::FETCH_OBJ);	
+						if($this->_returnArray == false){
+							$this->_results = $this->_query->fetchAll(\PDO::FETCH_OBJ);	
+						} else {
+							$this->_results = $this->_query->fetchAll();	
+						}
 					break;
 					case "count":
 						$this->_results = $this->_query->rowCount();	
@@ -60,7 +70,7 @@ class DB implements \Countable {
 				} elseif($type == "count") {
 					$this->_results = $this->_query->rowCount();
 				} 
-				//$this->_query = "";			
+				$this->_query = "";			
 			}	
 		}
 		return $this->_results;
@@ -72,7 +82,7 @@ class DB implements \Countable {
 			$data["columns"][] = "`" . $column . "`";
 			$data["values"][] = "'" . $value . "'";
 		}
-		return $this->query("INSERT INTO " . $this->_table . " (" . implode(",", $data["columns"]) . ") VALUES " . implode(",", $data["values"]), "insert");
+		return $this->query("INSERT INTO `" . $this->_table . "` (" . implode(",", $data["columns"]) . ") VALUES (" . implode(",", $data["values"]) . ")", "insert");
 	}
 
 	public function update(array $updateData){
