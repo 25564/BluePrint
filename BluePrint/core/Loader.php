@@ -96,7 +96,7 @@ class Loader {
         foreach (self::$dirs as $dir) {
             $file = $dir.'/'.$class_file;
             if (file_exists($file)) {
-                require $file;
+                require_once $file;
                 return;
             }
         }

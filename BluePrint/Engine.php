@@ -40,11 +40,13 @@ class Engine {
         }
         //Components
         $this->loader->register('DB', '\BluePrint\components\DB');
-
+        $this->loader->register('router', '\BluePrint\components\router\Router');
+        
         // Register framework methods
         $methods = array(//Standard Methods
-            'start', 'loadPlugin', 'escape'
+            'start', 'loadPlugin', 'escape', 'route'
         );
+        
         foreach ($methods as $name) {
             $this->dispatcher->set($name, array($this, '_'.$name));
         }
@@ -54,7 +56,8 @@ class Engine {
         $this->set("PDO.username", "root");
         $this->set("PDO.password", "");
         $this->set("PDO.db", "framework");
-
+        $this->set("base.path", $_SERVER["DOCUMENT_ROOT"]."/BluePrint");
+        $this->set("base.host", $_SERVER["HTTP_HOST"]."/BluePrint");
         $initialized = true;
     }
 
@@ -134,12 +137,18 @@ class Engine {
     /**********************************
      		Start Standard Methods
     **********************************/
+    public function _route($pattern, array $config){
+        $Route = new components\router\route($pattern, $config);
+        $this->router()->map($Route);
+    }
+
 	public function _start() {
         $dispatched = false;
         // Enable output buffering
         ob_start();
         // Enable error handling
         $this->handleErrors($this->get('BluePrint.Config.handle_errors'));
+        $this->router()->dispatch();
     }
 
     public function _loadPlugin($name, $class, array $params = array(), $callback = null){
